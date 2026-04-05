@@ -80,7 +80,7 @@ export default function AboutPage() {
           className="w-36 h-44 md:w-40 md:h-52 lg:w-48 lg:h-60 flex-shrink-0 md:-mt-3"
         >
           <Image
-            src="/face.PNG"
+            src="/face.png"
             alt="Lysandre Stone-Bourgeois"
             width={192}
             height={240}
