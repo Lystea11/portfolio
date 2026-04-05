@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #f5f0e8;
+  --color-foreground: #2a2520;
+  --color-accent: #9a6b3a;
+  --color-accent-hover: #7d5630;
+  --color-accent-light: #c49a6c;
+  --color-muted: #a09890;
+  --color-muted-light: #b8b0a8;
+  --color-surface: #ebe5da;
+  --color-surface-elevated: #e2dbd0;
+  --color-surface-hover: #d9d2c6;
+  --color-border: #d5cec4;
+  --color-warm-white: #faf7f2;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ─── */
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Subtle paper texture ─── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-warm-white);
+}
+
+/* ─── Split Flap Panel ─── */
+.split-flap-char {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-foreground);
+  color: var(--color-warm-white);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Full-size variant for grid cells */
+.flap-grid-cell .split-flap-char {
+  width: 100%;
+  height: 100%;
+}
+
+.split-flap-char::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* ─── Screen wipe transition ─── */
+.wipe-enter {
+  clip-path: inset(0 0 100% 0);
+}
+.wipe-active {
+  clip-path: inset(0 0 0% 0);
 }
