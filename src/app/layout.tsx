@@ -16,7 +16,15 @@ export const metadata: Metadata = {
   title: "LSB — Portfolio",
   description:
     "Developer portfolio of Lysandre Stone-Bourgeois. Projects in full-stack, systems programming, AI/ML, and cybersecurity.",
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
