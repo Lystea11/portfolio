@@ -7,8 +7,18 @@ import { getProject } from "@/lib/projects";
 import SplitFlapText from "@/components/split-flap-text";
 import PageTransition from "@/components/page-transition";
 
-function ProjectHeroVisual({ video }: { video?: string }) {
+function ProjectHeroVisual({ video, url }: { video?: string; url?: string }) {
   if (!video) return null;
+  const videoEl = (
+    <video
+      src={video}
+      autoPlay
+      loop
+      muted
+      playsInline
+      className={`w-full rounded-lg shadow-lg shadow-foreground/8${url ? " cursor-pointer" : ""}`}
+    />
+  );
   return (
     <div
       className="relative w-full pt-28 pb-12 md:pt-32 md:pb-16"
@@ -22,14 +32,13 @@ function ProjectHeroVisual({ video }: { video?: string }) {
       }}
     >
       <div className="mx-auto max-w-4xl px-6 md:px-8">
-        <video
-          src={video}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full rounded-lg shadow-lg shadow-foreground/8"
-        />
+        {url ? (
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            {videoEl}
+          </a>
+        ) : (
+          videoEl
+        )}
       </div>
     </div>
   );
@@ -51,7 +60,7 @@ export default function ProjectDetailPage() {
   return (
     <PageTransition className="min-h-screen">
       {/* Hero */}
-      <ProjectHeroVisual video={project.video} />
+      <ProjectHeroVisual video={project.video} url={project.url} />
 
       {/* Content */}
       <div className="relative max-w-3xl mx-auto px-6 md:px-8 pb-20">
@@ -67,16 +76,6 @@ export default function ProjectDetailPage() {
           >
             <span>&larr;</span> ALL PROJECTS
           </Link>
-        </motion.div>
-
-        {/* Category */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="font-mono text-[10px] tracking-[0.2em] text-muted mb-4 uppercase"
-        >
-          {project.category}
         </motion.div>
 
         {/* Title */}
@@ -96,6 +95,39 @@ export default function ProjectDetailPage() {
           >
             {project.tagline}
           </motion.p>
+
+          {(project.github || project.url) && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65 }}
+              className="flex items-center gap-4 mt-4 font-mono text-xs text-muted"
+            >
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-muted/40 underline-offset-3 hover:decoration-foreground/50 hover:text-foreground transition-colors"
+                >
+                  {project.github.replace("https://github.com/", "")}
+                </a>
+              )}
+              {project.github && project.url && (
+                <span className="text-border">·</span>
+              )}
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-muted/40 underline-offset-3 hover:decoration-foreground/50 hover:text-foreground transition-colors"
+                >
+                  {project.url.replace(/^https?:\/\//, "")}
+                </a>
+              )}
+            </motion.div>
+          )}
         </div>
 
         {/* Tech Stack */}

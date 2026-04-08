@@ -184,7 +184,7 @@ export default function AboutPage() {
 
           {/* Resume — distinct from the links above */}
           <a
-            href="/Lysandre_Stone-Bourgeois_Resume.pdf"
+            href="/Lysandre_Stone_Bourgeois_Resume_2026.pdf"
             download
             className="inline-block text-sm text-accent hover:text-accent-hover transition-colors border-b border-accent/30 pb-px"
           >
