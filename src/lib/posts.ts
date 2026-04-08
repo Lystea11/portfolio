@@ -129,5 +129,7 @@ export function getPost(slug: string): BlogPost | undefined {
 }
 
 export function getAllPosts(): BlogPost[] {
-  return posts;
+  return [...posts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
 }
