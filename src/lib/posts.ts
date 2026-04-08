@@ -1,3 +1,6 @@
+// Inline hyperlinks are authored with markdown-style syntax inside any
+// text field: [link label](https://example.com). The blog renderer parses
+// these and turns them into subtly underlined anchors.
 export type ContentBlock =
   | { type: "paragraph"; text: string }
   | { type: "heading"; text: string }
@@ -51,6 +54,71 @@ export const posts: BlogPost[] = [
       {
         type: "paragraph",
         text: "Now, I am improving the design of the Metaframe device and making sure that ALL components are being placed, as well as ensuring that every component is compatible.",
+      },
+    ],
+  },
+    {
+    slug: "no-dependency-text-embedding",
+    title: "No-Dependency Text-Embedding",
+    date: "2026-04-08",
+    excerpt:
+      "In Data Science we had a week-long choice project, I decided to create a no-dependency text-embedding model that follows the pythonic guidelines.",
+    category: "AI",
+    readTime: "4m",
+    content: [
+      {
+        type: "paragraph",
+        text: "Earlier in the year of my Data Science course, a couple classmates and I were reading the \"Fluent Python\" book by Luciano Ramalho, which explains in detail the idea of writing code \"pythonically\". Essentially, how python works low level (CPython), and that's used to create more efficient python scripts.",
+      },
+      {
+        type: "paragraph",
+        text: "Following the guidelines in the text, I decided to create a mini text-embedding model with no external dependencies. My goal was to be able to input raw text data, and see similarities between words.",
+      },
+      {
+        type: "paragraph",
+        text: "To preface, I barely had any background in matrices, cosine similarity, and even tokenization. So I had to learn those before diving into this project. I read the book \"Build a Large Language Model\" by Sebastian Raschka, and that gave me some really good fundamental knowledge on concepts like the transformer model, how tokens function, and a bit about the math behind it all.",
+      },
+      {
+        type: "paragraph",
+        text: "Now, with some knowledge in the topic, I felt I was ready to start building, and split the text-embedding process into these chunks:",
+      },
+      {
+        type: "list",
+        items: [
+          "Tokenization: splits sentences into words and strip them down",
+          "Vocabulary: assign each word to a unique number",
+          "Co-concurrency matrix: calculate how many times a word appears next to another word and build it out in a matrix",
+          "PPMI: gives meaning to words by comparing expected co-concurrency vs real co-concurrency",
+          "Word vectors: turns a word into a list of numbers so that one word can represent one vector ",
+          "Cosine similarity: measures the similarity between two words",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Now that I had each subprocess laid out and understood what they all do, I implementing them with some small challenges along the way like dealing with matrices in python, and writing out the cosine similarity calculations.",
+      },
+      {
+        type: "paragraph",
+        text: "Finally, I downloaded the Amazon Fine Food Reviews dataset from kaggle which is a compilation of a couple thousand food review comments. After cleaning up the dataset a bit and formatting it to a .txt file, I wrote my __main__ dunder, ran it, and it worked!",
+      },
+      {
+        type: "paragraph",
+        text: "The main() function has an argument for input size (how many characters to be fed), with around 10,000 being the sweet spot between speed and size. ",
+      },
+      {
+        type: "paragraph",
+        text: "Here are some cool outputs I got for the top 5 most similar:",
+      },
+      {
+        type: "list",
+        items: [
+          "Apple: newton, cider, salsa, nutmeg, black",
+          "Young: established, delicately, harmful, changed, kid",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "You can see my code at: [Github](https://github.com/Lystea11/Text-Embedding)",
       },
     ],
   },

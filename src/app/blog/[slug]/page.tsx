@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -17,6 +18,44 @@ function formatDate(dateStr: string): string {
     .toUpperCase();
 }
 
+// Parses inline [label](url) tokens into React nodes. Anything outside a
+// match is returned as a plain string so surrounding whitespace/newlines
+// are untouched.
+const INLINE_LINK_RE = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+
+function renderInlineText(text: string): ReactNode {
+  const nodes: ReactNode[] = [];
+  let lastIndex = 0;
+  let key = 0;
+
+  for (const match of text.matchAll(INLINE_LINK_RE)) {
+    const idx = match.index ?? 0;
+    if (idx > lastIndex) {
+      nodes.push(text.slice(lastIndex, idx));
+    }
+    const [, label, url] = match;
+    const isExternal = /^https?:\/\//i.test(url);
+    nodes.push(
+      <a
+        key={`l${key++}`}
+        href={url}
+        {...(isExternal
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {})}
+        className="underline decoration-accent/40 decoration-1 underline-offset-[3px] hover:decoration-accent hover:text-accent transition-colors duration-200"
+      >
+        {label}
+      </a>
+    );
+    lastIndex = idx + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+  return nodes.length ? nodes : text;
+}
+
 function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
   return (
     <>
@@ -28,7 +67,7 @@ function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
                 key={i}
                 className="text-[15px] leading-[1.85] text-foreground/85 mb-6"
               >
-                {block.text}
+                {renderInlineText(block.text)}
               </p>
             );
           case "heading":
@@ -37,7 +76,7 @@ function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
                 key={i}
                 className="font-mono text-base font-semibold text-foreground mt-10 mb-4"
               >
-                {block.text}
+                {renderInlineText(block.text)}
               </h2>
             );
           case "callout":
@@ -47,7 +86,7 @@ function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
                 className="border-l-2 border-accent/50 pl-5 py-3 my-8 bg-surface/40 -ml-1 rounded-r-sm"
               >
                 <p className="text-sm leading-[1.8] text-foreground/75 italic">
-                  {block.text}
+                  {renderInlineText(block.text)}
                 </p>
               </blockquote>
             );
@@ -60,7 +99,7 @@ function ContentRenderer({ blocks }: { blocks: ContentBlock[] }) {
                     className="flex items-start gap-3 text-[15px] leading-[1.8] text-foreground/80"
                   >
                     <span className="mt-2.5 w-1 h-1 rounded-full bg-accent/60 shrink-0" />
-                    {item}
+                    <span>{renderInlineText(item)}</span>
                   </li>
                 ))}
               </ul>
